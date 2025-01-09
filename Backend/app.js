@@ -1,15 +1,24 @@
-require('dotenv').config(); // Load environment variables
-const express = require('express'); // Corrected the order
+const dotenv = require('dotenv');
+dotenv.config();
+const express = require('express');
 const cors = require('cors');
 const app = express();
+const cookieParser = require('cookie-parser');
+const connectToDb = require('./db/db');
+const userRoutes = require('./routes/user.routes');
 
-// Enable CORS middleware
+connectToDb();
+
 app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Define a route
-app.get('/', (req, res) => { // Fixed `app,get` to `app.get`
-    res.send('Hello World'); // Fixed `resizeBy.send` to `res.send`
-});
+// Root route to check if the server is running
+app.get('/', (req, res) => {
+    res.send('Hello World'); 
+// Route for handling user-related requests
+app.use('/users', userRoutes);
 
-// Export the app for use in server.js
 module.exports = app;
+
+});
