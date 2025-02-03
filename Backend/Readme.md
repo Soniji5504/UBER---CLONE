@@ -1,124 +1,215 @@
-# UBER Clone Backend
+# Backend API Documentation
 
-## API Documentation
+This document provides details on the backend API endpoints for user authentication, login, logout, profile management, and captain-related operations.
 
-### User Registration
+## Table of Contents
+- [Users](#users)
+  - [Register](#register)
+  - [Login](#login)
+  - [Profile](#profile)
+  - [Logout](#logout)
+- [Captains](#captains)
+  - [Register](#register-1)
+  - [Login](#login-1)
+  - [Profile](#profile-1)
+  - [Logout](#logout-1)
 
-**Endpoint:** `POST /api/register`
+## Users
 
-**Description:** Registers a new user.
-
-**Request Body:**
-```json
-{
-    "username": "string",
-    "email": "string",
-    "password": "string"
-}
-```
-
-**Response:**
-- **201 Created**
+### Register
+- **URL:** `/users/register`
+- **Method:** `POST`
+- **Description:** Registers a new user by creating a user account with the provided information.
+- **Request Body:**
     ```json
     {
-        "message": "User registered successfully",
-        "userId": "string"
+        "fullname": {
+            "firstname": "string (required, min 3 characters)",
+            "lastname": "string (optional, min 3 characters)"
+        },
+        "email": "string (required, valid email)",
+        "password": "string (required, min 6 characters)"
     }
     ```
-- **400 Bad Request**
+- **Example Response:**
     ```json
     {
-        "error": "string"
-    }
-    ```
-
-### User Login
-
-**Endpoint:** `POST /api/login`
-
-**Description:** Authenticates a user and returns a token.
-
-**Request Body:**
-```json
-{
-    "email": "string",
-    "password": "string"
-}
-```
-
-**Response:**
-- **200 OK**
-    ```json
-    {
-        "message": "Login successful",
+        "user": {
+            "fullname": {
+                "firstname": "string",
+                "lastname": "string"
+            },
+            "email": "string",
+            "password": "string"
+        },
         "token": "string"
     }
     ```
-- **401 Unauthorized**
+
+### Login
+- **URL:** `/users/login`
+- **Method:** `POST`
+- **Description:** Authenticates a user using their email and password, returning a JWT token upon successful login.
+- **Request Body:**
     ```json
     {
-        "error": "Invalid credentials"
+        "email": "string (required, valid email)",
+        "password": "string (required, min 6 characters)"
+    }
+    ```
+- **Example Response:**
+    ```json
+    {
+        "user": {
+            "fullname": {
+                "firstname": "string",
+                "lastname": "string"
+            },
+            "email": "string",
+            "password": "string"
+        },
+        "token": "string"
     }
     ```
 
-### User Profile
-
-**Endpoint:** `GET /api/profile`
-
-**Description:** Retrieves the profile of the authenticated user.
-
-**Headers:**
-```json
-{
-    "Authorization": "Bearer <token>"
-}
-```
-
-**Response:**
-- **200 OK**
+### Profile
+- **URL:** `/users/profile`
+- **Method:** `GET`
+- **Description:** Retrieves the profile information of the currently authenticated user.
+- **Authentication:** Requires a valid JWT token in the Authorization header: `Authorization: Bearer <token>`
+- **Example Response:**
     ```json
     {
-        "username": "string",
-        "email": "string",
-        "createdAt": "string"
-    }
-    ```
-- **401 Unauthorized**
-    ```json
-    {
-        "error": "Unauthorized"
+        "user": {
+            "fullname": {
+                "firstname": "string",
+                "lastname": "string"
+            },
+            "email": "string"
+        }
     }
     ```
 
-### User Logout
-
-**Endpoint:** `POST /api/logout`
-
-**Description:** Logs out the authenticated user.
-
-**Headers:**
-```json
-{
-    "Authorization": "Bearer <token>"
-}
-```
-
-**Response:**
-- **200 OK**
+### Logout
+- **URL:** `/users/logout`
+- **Method:** `GET`
+- **Description:** Logs out the current user and blacklists the token provided in the cookie or headers.
+- **Authentication:** Requires a valid JWT token in the Authorization header or cookie.
+- **Example Response:**
     ```json
     {
         "message": "Logout successful"
     }
     ```
-- **401 Unauthorized**
+
+## Captains
+
+### Register
+- **URL:** `/captains/register`
+- **Method:** `POST`
+- **Description:** Registers a new captain by creating a captain account with the provided information.
+- **Request Body:**
     ```json
     {
-        "error": "Unauthorized"
+        "fullname": {
+            "firstname": "string (required, min 3 characters)",
+            "lastname": "string (optional, min 3 characters)"
+        },
+        "email": "string (required, valid email)",
+        "password": "string (required, min 6 characters)",
+        "vehicle": {
+            "color": "string (required, min 3 characters)",
+            "plate": "string (required, min 3 characters)",
+            "capacity": "number (required, min 1)",
+            "vehicleType": "string (required, must be 'car', 'motorcycle', or 'auto')"
+        }
+    }
+    ```
+- **Example Response:**
+    ```json
+    {
+        "captain": {
+            "fullname": {
+                "firstname": "string",
+                "lastname": "string"
+            },
+            "email": "string",
+            "password": "string",
+            "vehicle": {
+                "color": "string",
+                "plate": "string",
+                "capacity": "number",
+                "vehicleType": "string"
+            }
+        },
+        "token": "string"
     }
     ```
 
-### Important Notes
+### Login
+- **URL:** `/captains/login`
+- **Method:** `POST`
+- **Description:** Authenticates a captain using their email and password, returning a JWT token upon successful login.
+- **Request Body:**
+    ```json
+    {
+        "email": "string (required, valid email)",
+        "password": "string (required, min 6 characters)"
+    }
+    ```
+- **Example Response:**
+    ```json
+    {
+        "captain": {
+            "fullname": {
+                "firstname": "string",
+                "lastname": "string"
+            },
+            "email": "string",
+            "password": "string",
+            "vehicle": {
+                "color": "string",
+                "plate": "string",
+                "capacity": "number",
+                "vehicleType": "string"
+            }
+        },
+        "token": "string"
+    }
+    ```
 
-- Ensure to include the `Authorization` header with the token for endpoints that require authentication.
-- Passwords should be stored securely using hashing algorithms.
-- Validate all input data to prevent security vulnerabilities.
+### Profile
+- **URL:** `/captains/profile`
+- **Method:** `GET`
+- **Description:** Retrieves the profile information of the currently authenticated captain.
+- **Authentication:** Requires a valid JWT token in the Authorization header: `Authorization: Bearer <token>`
+- **Example Response:**
+    ```json
+    {
+        "captain": {
+            "fullname": {
+                "firstname": "string",
+                "lastname": "string"
+            },
+            "email": "string",
+            "vehicle": {
+                "color": "string",
+                "plate": "string",
+                "capacity": "number",
+                "vehicleType": "string"
+            }
+        }
+    }
+    ```
+
+### Logout
+- **URL:** `/captains/logout`
+- **Method:** `GET`
+- **Description:** Logs out the current captain and blacklists the token provided in the cookie or headers.
+- **Authentication:** Requires a valid JWT token in the Authorization header or cookie.
+- **Example Response:**
+    ```json
+    {
+        "message": "Logout successful"
+    }
+    ```
