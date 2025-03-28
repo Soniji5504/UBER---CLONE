@@ -1,4 +1,18 @@
-# Backend API Documentation
+<<<<<<< Tabnine <<<<<<<
+<!--//+
+## Function: i//+
+//+
+### Description//+
+The function `i` is a placeholder or marker used within the markdown document. It does not perform any operations or computations.//+
+//+
+### Parameters//+
+- None//+
+//+
+### Returns//+
+- None//+
+-->//+
+i
+>>>>>>> Tabnine >>>>>>>// {"conversationId":"1b856430-28dd-4020-bb88-3fc0ddc530d1","source":"instruct"}on
 
 This document provides details on the backend API endpoints for user authentication, login, logout, profile management, and captain-related operations.
 
@@ -213,3 +227,5 @@ This document provides details on the backend API endpoints for user authenticat
         "message": "Logout successful"
     }
     ```
+
+i
