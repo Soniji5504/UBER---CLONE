@@ -402,11 +402,7 @@ Special thanks to the amazing open-source communities behind:
 - [Tailwind CSS](https://tailwindcss.com) - Utility-first CSS framework
 - [Google Maps Platform](https://developers.google.com/maps) - Mapping and location services
 
-## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
 
 <div align="center">
 
